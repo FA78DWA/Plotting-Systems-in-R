@@ -215,9 +215,15 @@ plot(x,y, main = "plot 1", pch = 19, col = "red")
 plot(x,z, main = "plot 2", pch = 19)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-15-1.png) You don't have to specify the location of each plot because they are plotted by the order of their `plot` call.
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
-Another important note is that the difference `mfrow` and `mfcol`, is the order of locations the plot will appear in. For example, we want to add 4 plots into one. Note the difference between the plot when we use `mfrow` and the plot we use `mfcol` to specify the number of rows and columns. `mfrow` fills the **rows**, and `mfcol` fills the **columns**.
+You don't have to specify the location of each plot because they are plotted by the order of their `plot` call.
+
+Another important note is that the difference `mfrow` and `mfcol`, is the order of locations the plot will appear in.
+
+Note the difference between the plot when we use `mfrow` and the other plot when we use `mfcol` to specify the number of rows and columns.
+
+`mfrow` fills the **rows**, and `mfcol` fills the **columns**.
 
 ``` r
 w  <- x;
