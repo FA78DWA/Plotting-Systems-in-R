@@ -108,7 +108,7 @@ plot(x,y,xlab = "var1", ylab = "var2", pch = 19)
 
 ![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
-More option are shown in the figure below. You can see the some demos by calling `example("points")`. Note that, for values 21 to 25, you need to specify two colors one for the edge and the other for the filling. ![](PlottingSystems_files/figure-markdown_github/points.png)
+More option are shown in the figure below. You can see the some demos by calling `example("points")`. Note that, for values 21 to 25, you need to specify two colors one for the edge and the other for the filling. ![](BasePlottingSystems_files/figure-markdown_github/points.png)
 
 To add title to the plot, use `title` after calling `plot`
 
