@@ -1,6 +1,6 @@
 -   [Important Global Parameters](#important-global-parameters)
 -   [The base plotting system](#the-base-plotting-system)
-    -   [Histograms](#histograms)
+-   [Lattice Plot System](#lattice-plot-system)
 
 Important Global Parameters
 ===========================
@@ -205,7 +205,15 @@ plot(x,z, main = "plot 2", pch = 19)
 
 ![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
-We can play a little with margins to make this plot looks better. We will see that later.
+We can play a little with margins to make this plot looks better.
+
+``` r
+par(mfrow = c(2,1), mar = c(4,7,2,7))
+plot(x,y, main = "plot 1", pch = 19, col = "red")
+plot(x,z, main = "plot 2", pch = 19)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 To add the two plots side by side, then use 1 row, 2 columns.
 
@@ -215,7 +223,7 @@ plot(x,y, main = "plot 1", pch = 19, col = "red")
 plot(x,z, main = "plot 2", pch = 19)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 You don't have to specify the location of each plot because they are plotted by the order of their `plot` call.
 
@@ -235,7 +243,7 @@ plot(x,z+y, main = "plot 4", pch = 19, col = "green")
 mtext("using mfrow", outer = TRUE, cex = 1.5)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 ``` r
 par(mfcol = c(2,2), oma = c(0,0,2,0))
@@ -246,31 +254,71 @@ plot(x,z+y, main = "plot 4", pch = 19, col = "green")
 mtext("using mfcol", outer = TRUE, cex = 1.5)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-17-1.png)
-
-Histograms
-----------
-
-``` r
-## load datasets
-library(datasets)
-
-## we use the default setting for this function
-hist(airquality$Ozone) 
-```
-
 ![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
+Lattice Plot System
+===================
+
+In `lattice` plotting and annotation are done in one code line (calling one of the core plotting functions) instead of the **two steps** plotting in **Base Plotting System**. You need to install and load `lattice` library to be able to use it.
+
+**Lattice Core Plotting Functions**
+
+-   `xyplot`: this is the main function for creating scatterplots
+-   `bwplot`: box-and-whiskers plots ("boxplots")
+-   `histogram`: histograms
+-   `stripplot`: like a boxplot but with actual points
+-   `dotplot`: plot dots on "violin strings"
+-   `splom`: scatterplot matrix; like pairs in base plotting system
+-   `levelplot`, `contourplot`: for plotting "image" data
+
+**The general form for calling lattice plot function**
+
+-   On the left of the `~` is the y-axis variable, and on the right is the x-axis variable.
+
+-   `f` and `g` are conditioning variables - they are optional, and you can use only one. The `*` indicates an interaction between two variables.
+
+-   The second argument `data` is the data frame you wan to plot from.
+
+**Examples** Load the `airquality` dataset from `datasets` library in `R`, and plot `Ozone` vs `Wind`.
+
 ``` r
-## Scatter Plot
-data("cars")
-with(cars, plot(speed,dist))
+library(lattice)
+library(datasets)
+
+## airquality dataset
+head(airquality)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-18-2.png)
+    ##   Ozone Solar.R Wind Temp Month Day
+    ## 1    41     190  7.4   67     5   1
+    ## 2    36     118  8.0   72     5   2
+    ## 3    12     149 12.6   74     5   3
+    ## 4    18     313 11.5   62     5   4
+    ## 5    NA      NA 14.3   56     5   5
+    ## 6    28      NA 14.9   66     5   6
 
 ``` r
-## box plot
-# airq <- transform(airquality, Month=factor(Month))
-# boxplot(ozone~Month, airq, xlab="Month", ylab="ozone(ppb)")
+## Plot ozone vs wind
+xyplot(Ozone ~ Wind, data = airquality)
 ```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-20-1.png)
+
+Create a panel plot that shows the relation between `Ozone` and `wind` acreoss different months. This means that we need to make a separate `Ozone/Wind` plot for each month. In this example we will need the factor argument `f` in `xyplot`.
+
+``` r
+## convert Month variable into factor
+airquality <- transform(airquality, Month = factor(Month))
+
+## Plot
+xyplot(y ~ x | Month, data = airquality)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-1.png)
+
+``` r
+## Change the layout of the plot
+xyplot(y ~ x | Month, data = airquality,  layout = c(5, 1))
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-2.png)
