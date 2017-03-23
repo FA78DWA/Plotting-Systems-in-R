@@ -259,7 +259,13 @@ mtext("using mfcol", outer = TRUE, cex = 1.5)
 Lattice Plotting System
 =======================
 
-In `lattice` plotting and annotation are done in one code line (calling one of the core plotting functions) instead of the **two steps** plotting in **Base Plotting System**. You need to install and load `lattice` library to be able to use it.
+-   Lattice plots are constructed with a single function call to a core lattice function (e.g. xyplot), instead of the **two steps** plotting in **Base Plotting System**.
+
+-   Aspects like margins and spacing are automatically handled and defaults are usually sufficient
+
+-   The lattice system is ideal for creating conditioning plots where you examine the same kind of plot under many different conditions
+
+-   Panel functions can be specified/customized to modify what is plotted in each of the plot panels
 
 **Lattice Core Plotting Functions**
 
