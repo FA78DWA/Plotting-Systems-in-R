@@ -1,6 +1,6 @@
 -   [Important Global Parameters](#important-global-parameters)
 -   [The base plotting system](#the-base-plotting-system)
--   [Lattice Plot System](#lattice-plot-system)
+-   [Lattice Plotting System](#lattice-plotting-system)
 
 Important Global Parameters
 ===========================
@@ -256,22 +256,30 @@ mtext("using mfcol", outer = TRUE, cex = 1.5)
 
 ![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
-Lattice Plot System
-===================
+Lattice Plotting System
+=======================
 
 In `lattice` plotting and annotation are done in one code line (calling one of the core plotting functions) instead of the **two steps** plotting in **Base Plotting System**. You need to install and load `lattice` library to be able to use it.
 
 **Lattice Core Plotting Functions**
 
 -   `xyplot`: this is the main function for creating scatterplots
+
 -   `bwplot`: box-and-whiskers plots ("boxplots")
+
 -   `histogram`: histograms
+
 -   `stripplot`: like a boxplot but with actual points
+
 -   `dotplot`: plot dots on "violin strings"
+
 -   `splom`: scatterplot matrix; like pairs in base plotting system
+
 -   `levelplot`, `contourplot`: for plotting "image" data
 
 **The general form for calling lattice plot function**
+
+`xyplot(y ~ x | f * g, data)`
 
 -   On the left of the `~` is the y-axis variable, and on the right is the x-axis variable.
 
@@ -279,7 +287,9 @@ In `lattice` plotting and annotation are done in one code line (calling one of t
 
 -   The second argument `data` is the data frame you wan to plot from.
 
-**Examples** Load the `airquality` dataset from `datasets` library in `R`, and plot `Ozone` vs `Wind`.
+**Examples**
+
+Load the `airquality` dataset from `datasets` library in `R`, and plot `Ozone` vs `Wind`.
 
 ``` r
 library(lattice)
@@ -302,7 +312,7 @@ head(airquality)
 xyplot(Ozone ~ Wind, data = airquality)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 Create a panel plot that shows the relation between `Ozone` and `wind` acreoss different months. This means that we need to make a separate `Ozone/Wind` plot for each month. In this example we will need the factor argument `f` in `xyplot`.
 
@@ -311,14 +321,83 @@ Create a panel plot that shows the relation between `Ozone` and `wind` acreoss d
 airquality <- transform(airquality, Month = factor(Month))
 
 ## Plot
-xyplot(y ~ x | Month, data = airquality)
+xyplot(Ozone ~ Wind | Month, data = airquality)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-20-1.png)
+
+``` r
+## Change the layout of the plot
+xyplot(Ozone ~ Wind | Month, data = airquality,  layout = c(5, 1))
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-20-2.png)
+
+**Lattice Panel Function**
+
+-   Lattice has `panel function` the controls what happens inside each panel of the plot.
+
+-   Lattice comes with default `panel functions`, but you can supply your own if you want more customization.
+
+-   `Panel functions` receive the x/y coordinates of the data points in their panel (along with any optional arguments).
+
+``` r
+## generate random data
+set.seed(0)
+x <- rnorm(100)
+f <- rep(0:1, each = 50) ## factor variable
+y <- x + f - f * x + rnorm(100, sd = 0.5)
+f <- factor(f, labels = c("grp 1", "grp 2"))
+
+## Plot with default panel settings
+xyplot(y ~ x |f)
 ```
 
 ![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
 ``` r
-## Change the layout of the plot
-xyplot(y ~ x | Month, data = airquality,  layout = c(5, 1))
+## Plot with custom panel settings "add median line"
+xyplot(y ~ x |f, panel = function(x, y, ...){
+        panel.xyplot(x,y, ...) ## First call the default xyplot
+        panel.abline(h= median(y), lty = 2) ## Add a horizontal line at the median
+        
+})
 ```
 
 ![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-2.png)
+
+``` r
+## Plot with custom panel settings "add linear model"
+xyplot(y ~ x |f, panel = function(x, y, ...){
+        panel.xyplot(x,y, ...) ## First call the default xyplot
+        panel.lmline(x,y, col = 2) ## Add a linear model
+        
+})
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-3.png)
+
+**Lattice Behaviour**
+
+-   **The Base graphics** functions plot data directly to the graphics device (screen, PDF file, etc.)
+
+-   **Lattice graphics** functions return an "plot objects" of class **trellis**.
+
+-   The `print` methods for lattice functions actually do the work of plotting the data on the graphics device.
+
+``` r
+## store the plot
+plotObject <- xyplot(Ozone ~ Wind, data = airquality)
+
+## call print to draw the plot
+print(plotObject)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-22-1.png)
+
+``` r
+## Auto-print
+xyplot(Ozone ~ Wind, data = airquality)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-22-2.png)
