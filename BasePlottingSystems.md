@@ -2,6 +2,8 @@
 -   [The base plotting system](#the-base-plotting-system)
 -   [Lattice Plotting System](#lattice-plotting-system)
 -   [`ggplot2`](#ggplot2)
+    -   [Quick plot `qplot`](#quick-plot-qplot)
+    -   [[ggplot](https://github.com/FA78DWA/Data-Visualization-Tutorials-R/blob/master/diamonds_ggplot.md)](#ggplot)
 
 Important Global Parameters
 ===========================
@@ -196,25 +198,15 @@ Note that, large margins are necessary for the axes labels to show up.
 
 **Add multiple plots in one big plot**
 
-We can chang the number of rows and columns in the plot by using `par()` function. For example, to stack 2 plot on top of each other, we will need 2 rows and one column.
+We can chang the number of rows and columns in the plot by using `par()` function. For example, to stack 2 plots row-wise, we will need 2 rows and one column.
 
 ``` r
-par(mfrow = c(2,1))
+par(mfrow = c(2,1), mar = rep(2, 4))
 plot(x,y, main = "plot 1", pch = 19, col = "red")
 plot(x,z, main = "plot 2", pch = 19)
 ```
 
 ![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-14-1.png)
-
-We can play a little with margins to make this plot looks better.
-
-``` r
-par(mfrow = c(2,1), mar = c(4,7,2,7))
-plot(x,y, main = "plot 1", pch = 19, col = "red")
-plot(x,z, main = "plot 2", pch = 19)
-```
-
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 To add the two plots side by side, then use 1 row, 2 columns.
 
@@ -224,7 +216,7 @@ plot(x,y, main = "plot 1", pch = 19, col = "red")
 plot(x,z, main = "plot 2", pch = 19)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 You don't have to specify the location of each plot because they are plotted by the order of their `plot` call.
 
@@ -236,7 +228,7 @@ Note the difference between the plot when we use `mfrow` and the other plot when
 
 ``` r
 w  <- x;
-par(mfrow = c(2,2), oma = c(0,0,2,0))
+par(mfrow = c(2,2), oma = c(0,0,2,0), mar = rep(2, 4))
 plot(x,y, main = "plot 1", pch = 19, col = "red")
 plot(x,z, main = "plot 2", pch = 19)
 plot(x,w, main = "plot 3", pch = 19, col = "blue")
@@ -244,10 +236,10 @@ plot(x,z+y, main = "plot 4", pch = 19, col = "green")
 mtext("using mfrow", outer = TRUE, cex = 1.5)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 ``` r
-par(mfcol = c(2,2), oma = c(0,0,2,0))
+par(mfcol = c(2,2), oma = c(0,0,2,0), mar = rep(2, 4))
 plot(x,y, main = "plot 1", pch = 19, col = "red")
 plot(x,z, main = "plot 2", pch = 19)
 plot(x,w, main = "plot 3", pch = 19, col = "blue")
@@ -255,7 +247,7 @@ plot(x,z+y, main = "plot 4", pch = 19, col = "green")
 mtext("using mfcol", outer = TRUE, cex = 1.5)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 Lattice Plotting System
 =======================
@@ -319,7 +311,7 @@ head(airquality)
 xyplot(Ozone ~ Wind, data = airquality)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 Create a panel plot that shows the relation between `Ozone` and `wind` acreoss different months. This means that we need to make a separate `Ozone/Wind` plot for each month. In this example we will need the factor argument `f` in `xyplot`.
 
@@ -331,14 +323,14 @@ airquality <- transform(airquality, Month = factor(Month))
 xyplot(Ozone ~ Wind | Month, data = airquality)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 ``` r
 ## Change the layout of the plot
 xyplot(Ozone ~ Wind | Month, data = airquality,  layout = c(5, 1))
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-20-2.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-19-2.png)
 
 **Lattice Panel Function**
 
@@ -360,7 +352,7 @@ f <- factor(f, labels = c("grp 1", "grp 2"))
 xyplot(y ~ x |f)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ``` r
 ## Plot with custom panel settings "add median line"
@@ -371,7 +363,7 @@ xyplot(y ~ x |f, panel = function(x, y, ...){
 })
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-2.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-20-2.png)
 
 ``` r
 ## Plot with custom panel settings "add linear model"
@@ -382,7 +374,7 @@ xyplot(y ~ x |f, panel = function(x, y, ...){
 })
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-3.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-20-3.png)
 
 **Lattice Behaviour**
 
@@ -400,25 +392,46 @@ plotObject <- xyplot(Ozone ~ Wind, data = airquality)
 print(plotObject)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
 ``` r
 ## Auto-print
 xyplot(Ozone ~ Wind, data = airquality)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-22-2.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-21-2.png)
 
 `ggplot2`
 =========
 
-Important notes
+It's an implementation of the *Grammer of Graphics* by Liland Wilkinson.
+
+**Basic Components of `ggplot2` Plot**
+
+-   *Data frame* where your data are stored.
+
+-   *aes* Aesthetic mappings describe how data are mapped to color, size, ...
+
+-   *geoms* geometric objects like points, lines, shapes.
+
+-   *facets* for conditional plots.
+
+-   *stats* statixtical transfprmations like binning, quantiles, smoothing, regression,...
+
+-   *scales* what scale an aesthetic map uses (i.e. male=red, female=blue).
+
+-   *coordinate system*
+
+**Important notes**
 
 -   You need to label your `factor` variables properly.
 
+Quick plot `qplot`
+------------------
+
 We will use `mpg` dataset that comes with `ggplot2` package.
 
-Starting by a simple examples using `qplot` stands for quick plot to plot **engine displacement in litres** `displ` vs **highway miles per gallon** `hwy`.
+Plot **engine displacement in litres** `displ` vs **highway miles per gallon** `hwy`.
 
 ``` r
 library(ggplot2)
@@ -441,7 +454,7 @@ head(mpg)
 qplot(displ, hwy, data = mpg)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-23-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 We can use `color` to highlight the different types of cars with respect to a `factor` variable `drv` that has three levels f = front-wheel drive, r = rear wheel drive, 4 = 4wd.
 
@@ -450,16 +463,16 @@ We can use `color` to highlight the different types of cars with respect to a `f
 qplot(displ, hwy, data = mpg, color = drv)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-24-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
-We can use point shapes `shape` instead of \`color.
+Using point shapes `shape` instead of `color`.
 
 ``` r
 ## qplot with color
 qplot(displ, hwy, data = mpg, shape = drv)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-24-1.png)
 
 To add a model curve for the data use `geom` function. Here i want to plot the points and a smooth curve in the plot, so i give the `geom` function `point` and `smooth` arguments.
 
@@ -470,7 +483,7 @@ qplot(displ, hwy, data = mpg, geom = c("point", "smooth"))
 
     ## `geom_smooth()` using method = 'loess'
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-26-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
 We can plot a histogram by giving `qplot` a single variable. To separate out the different car types, use `fill`.
 
@@ -481,7 +494,7 @@ qplot(hwy, data = mpg, fill = drv)
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-27-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-26-1.png)
 
 Don't use `color`, because it will color the outline only.
 
@@ -492,7 +505,7 @@ qplot(hwy, data = mpg, color = drv)
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-27-1.png)
 
 Another way to display data is using `smooth density` models.
 
@@ -501,27 +514,31 @@ Another way to display data is using `smooth density` models.
 qplot(hwy, data = mpg, geom = "density")
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-28-1.png)
 
-Adding some colors.
+Separate the different curves with color.
 
 ``` r
 ## qplot
 qplot(hwy, data = mpg, geom = "density", color = drv)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
-Trying `fill` instead of `color` :D
+Trying `fill` instead of `color`.
 
 ``` r
 ## qplot
 qplot(hwy, data = mpg, geom = "density", fill = drv)
 ```
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-30-1.png)
 
-**Facets** Same as the idea of `panels` in `lattice`, `ggplot2` calls them `facets`. Not the difference between `facets = drv~.` and `facets = .~drv`. It determines the arrangement of the plots.
+**Facets**
+
+The same idea as `panels` in `lattice`, `ggplot2` calls them `facets`.
+
+Note the difference between `facets = drv~.` and `facets = .~drv`. It determines the arrangement of the plots.
 
 ``` r
 ## qplot
@@ -530,7 +547,7 @@ qplot(hwy, data = mpg, facets = drv~.)
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-31-1.png)
 
 ``` r
 ## qplot
@@ -539,4 +556,7 @@ qplot(hwy, data = mpg, facets = .~drv)
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-33-1.png)
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-32-1.png)
+
+[ggplot](https://github.com/FA78DWA/Data-Visualization-Tutorials-R/blob/master/diamonds_ggplot.md)
+--------------------------------------------------------------------------------------------------
