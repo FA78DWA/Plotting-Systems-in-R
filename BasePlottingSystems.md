@@ -3,7 +3,7 @@
 -   [Lattice Plotting System](#lattice-plotting-system)
 -   [`ggplot2`](#ggplot2)
     -   [Quick plot `qplot`](#quick-plot-qplot)
-    -   [[ggplot](https://github.com/FA78DWA/Data-Visualization-Tutorials-R/blob/master/diamonds_ggplot.md)](#ggplot)
+    -   [ggplot (<https://github.com/FA78DWA/Data-Visualization-Tutorials-R/blob/master/diamonds_ggplot.md>)](#ggplot-httpsgithub.comfa78dwadata-visualization-tutorials-rblobmasterdiamonds_ggplot.md)
 
 Important Global Parameters
 ===========================
@@ -558,5 +558,5 @@ qplot(hwy, data = mpg, facets = .~drv)
 
 ![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-32-1.png)
 
-[ggplot](https://github.com/FA78DWA/Data-Visualization-Tutorials-R/blob/master/diamonds_ggplot.md)
---------------------------------------------------------------------------------------------------
+ggplot (<https://github.com/FA78DWA/Data-Visualization-Tutorials-R/blob/master/diamonds_ggplot.md>)
+---------------------------------------------------------------------------------------------------
