@@ -1,6 +1,7 @@
 -   [Important Global Parameters](#important-global-parameters)
 -   [The base plotting system](#the-base-plotting-system)
 -   [Lattice Plotting System](#lattice-plotting-system)
+-   [`ggplot2`](#ggplot2)
 
 Important Global Parameters
 ===========================
@@ -407,3 +408,135 @@ xyplot(Ozone ~ Wind, data = airquality)
 ```
 
 ![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-22-2.png)
+
+`ggplot2`
+=========
+
+Important notes
+
+-   You need to label your `factor` variables properly.
+
+We will use `mpg` dataset that comes with `ggplot2` package.
+
+Starting by a simple examples using `qplot` stands for quick plot to plot **engine displacement in litres** `displ` vs **highway miles per gallon** `hwy`.
+
+``` r
+library(ggplot2)
+head(mpg)
+```
+
+    ## # A tibble: 6 × 11
+    ##   manufacturer model displ  year   cyl      trans   drv   cty   hwy    fl
+    ##          <chr> <chr> <dbl> <int> <int>      <chr> <chr> <int> <int> <chr>
+    ## 1         audi    a4   1.8  1999     4   auto(l5)     f    18    29     p
+    ## 2         audi    a4   1.8  1999     4 manual(m5)     f    21    29     p
+    ## 3         audi    a4   2.0  2008     4 manual(m6)     f    20    31     p
+    ## 4         audi    a4   2.0  2008     4   auto(av)     f    21    30     p
+    ## 5         audi    a4   2.8  1999     6   auto(l5)     f    16    26     p
+    ## 6         audi    a4   2.8  1999     6 manual(m5)     f    18    26     p
+    ## # ... with 1 more variables: class <chr>
+
+``` r
+## qplot
+qplot(displ, hwy, data = mpg)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-23-1.png)
+
+We can use `color` to highlight the different types of cars with respect to a `factor` variable `drv` that has three levels f = front-wheel drive, r = rear wheel drive, 4 = 4wd.
+
+``` r
+## qplot with color
+qplot(displ, hwy, data = mpg, color = drv)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-24-1.png)
+
+We can use point shapes `shape` instead of \`color.
+
+``` r
+## qplot with color
+qplot(displ, hwy, data = mpg, shape = drv)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-25-1.png)
+
+To add a model curve for the data use `geom` function. Here i want to plot the points and a smooth curve in the plot, so i give the `geom` function `point` and `smooth` arguments.
+
+``` r
+## qplot
+qplot(displ, hwy, data = mpg, geom = c("point", "smooth"))
+```
+
+    ## `geom_smooth()` using method = 'loess'
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-26-1.png)
+
+We can plot a histogram by giving `qplot` a single variable. To separate out the different car types, use `fill`.
+
+``` r
+## qplot histogram + fill
+qplot(hwy, data = mpg, fill = drv)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-27-1.png)
+
+Don't use `color`, because it will color the outline only.
+
+``` r
+## qplot
+qplot(hwy, data = mpg, color = drv)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-28-1.png)
+
+Another way to display data is using `smooth density` models.
+
+``` r
+## qplot
+qplot(hwy, data = mpg, geom = "density")
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-29-1.png)
+
+Adding some colors.
+
+``` r
+## qplot
+qplot(hwy, data = mpg, geom = "density", color = drv)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-30-1.png)
+
+Trying `fill` instead of `color` :D
+
+``` r
+## qplot
+qplot(hwy, data = mpg, geom = "density", fill = drv)
+```
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-31-1.png)
+
+**Facets** Same as the idea of `panels` in `lattice`, `ggplot2` calls them `facets`. Not the difference between `facets = drv~.` and `facets = .~drv`. It determines the arrangement of the plots.
+
+``` r
+## qplot
+qplot(hwy, data = mpg, facets = drv~.)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-32-1.png)
+
+``` r
+## qplot
+qplot(hwy, data = mpg, facets = .~drv)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](BasePlottingSystems_files/figure-markdown_github/unnamed-chunk-33-1.png)
